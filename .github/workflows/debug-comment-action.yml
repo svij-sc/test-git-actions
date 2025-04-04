@@ -1,0 +1,48 @@
+name: debug-comment-action
+
+on:
+    issue_comment:
+        types: [created]
+
+jobs:
+  run-command-and-comment:
+    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '/debug-action') }}
+    runs-on: ubuntu-latest
+    steps:
+      # Ensure we are making checks using the context in main branch to be safe
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+      - uses: ./.github/actions/assert-is-collaborator
+        with:
+          username: ${{ github.event.comment.user.login }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commment workflow started
+        uses: ./.github/actions/comment-on-pr
+        with:
+          pr_number: ${{ github.event.issue.number }}
+          message: "🔄 [Workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) started."
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Debug
+        run: |
+          echo "Debugging..."
+          echo "pull_request info: ${{ github.event.issue.pull_request }}"
+
+      # - name: Checkout branch
+      #   uses: actions/checkout@v4
+      #   with:
+      #     ref: ${{ github.event.issue.pull_request.head.ref }}
+
+      # - name: Run some command
+      #   run: |
+      #     echo "Running command on branch: ${{ steps.pr_src_branch.outputs.result }}"
+      
+      # - name: Commment workflow succeeeded
+      #   uses: ./.github/actions/comment-on-pr
+      #   with:
+      #     pr_number: ${{ inputs.pr_number }}
+      #     message: "✅ [Workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) completed successfully!"
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
