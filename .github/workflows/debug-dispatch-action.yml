@@ -46,7 +46,7 @@ jobs:
 
       
       - name: Commment workflow succeeeded
-        uses: ./.github/actions/comment-on-pr
+        uses: ./.github/actions/comment-on-pr@main
         with:
           pr_number: ${{ inputs.pr_number }}
           message: "✅ [Workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) completed successfully!"
