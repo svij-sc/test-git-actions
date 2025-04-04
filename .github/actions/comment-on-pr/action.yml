@@ -22,8 +22,8 @@ runs:
           await github.rest.issues.createComment({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            issue_number: inputs.pr_number,
-            body: inputs.message
+            issue_number: context.inputs.pr_number,
+            body: context.inputs.message
           });
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
