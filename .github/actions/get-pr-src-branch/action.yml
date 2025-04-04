@@ -9,7 +9,7 @@ inputs:
 outputs:
   branch_name:
     description: 'The source branch name of the PR'
-    value: ${{ steps.get_branch_name.outputs.branch_name }}
+    value: ${{steps.get_branch_name.outputs.result}}
 
 runs:
   using: "composite"
@@ -20,6 +20,7 @@ runs:
       env:
         PR_NUMBER: ${{ inputs.pr_number }}
       with:
+        result-encoding: string
         script: |
           const pr_number = process.env.PR_NUMBER;
           const pr = await github.rest.pulls.get({
@@ -29,5 +30,4 @@ runs:
           });
           const branch_name = pr.data.head.ref;
           console.log("Branch name is:", branch_name);
-          console.log("PR data:", pr.data);
-          core.setOutput("branch_name", branch_name);  // matches the output ID above
+          return branch_name;
