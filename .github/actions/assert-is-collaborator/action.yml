@@ -14,17 +14,16 @@ runs:
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
       with:
+        # https://docs.github.com/en/rest/collaborators/collaborators?apiVersion=2022-11-28#check-if-a-user-is-a-repository-collaborator
         script: |
           const username = "${{ inputs.username }}";
-          const owner = context.repo.owner;
-          const repo = context.repo.repo;
-          try {
-            await github.rest.repos.checkCollaborator({ owner, repo, username });
-            console.log(`${username} IS a collaborator.`);
-          } catch (error) {
-            if (error.status === 404) {
-              throw new Error(`${username} is NOT a collaborator.`);
-            } else {
-              throw error;
-            }
+          const result = await github.rest.repos.checkCollaborator({ 
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            username: username
+          });
+          if (result.status === 204) {
+            console.log(`${username} is a collaborator.`);
+          } else {
+            throw new Error(`${username} is NOT a collaborator.`);
           }
