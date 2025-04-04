@@ -23,7 +23,6 @@ jobs:
       - uses: ./.github/actions/assert-is-collaborator
         with:
           username: ${{ github.event.comment.user.login }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Commment workflow started
         uses: ./.github/actions/comment-on-pr
@@ -33,9 +32,11 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Debug
+        env:
+          PR_DEBUG_INFO: ${{ toJson(github.event.issue.pull_request)}}
         run: |
           echo "Debugging..."
-          echo "pull_request info: ${{ github.event.issue.pull_request.head.ref }}"
+          echo "pull_request info: $PR_DEBUG_INFO"
           echo "workflow_url: ${{ env.WORKFLOW_URL }}"
 
       - name: Comment workflow ended
