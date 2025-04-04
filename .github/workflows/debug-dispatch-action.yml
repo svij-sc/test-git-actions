@@ -27,10 +27,12 @@ jobs:
       - name: Get PRs source branch name
         id: pr_src_branch
         uses: actions/github-script@v7
+        env:
+          PR_NUMBER: ${{ inputs.pr_number }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const pr_number = ${{ inputs.pr_number }};
+            const pr_number = process.env.PR_NUMBER;
             const pr = await github.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
