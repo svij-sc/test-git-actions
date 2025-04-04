@@ -20,7 +20,6 @@ runs:
       env:
         PR_NUMBER: ${{ inputs.pr_number }}
         MESSAGE: ${{ inputs.message }}
-        GITHUB_TOKEN: ${{ inputs.github-token }}
       with:
         script: |
           const pr_number = process.env.PR_NUMBER;

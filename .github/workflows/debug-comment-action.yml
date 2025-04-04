@@ -29,7 +29,6 @@ jobs:
         with:
           pr_number: ${{ github.event.issue.number }}
           message: "🔄 [Workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) started."
-          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Debug
         env:
