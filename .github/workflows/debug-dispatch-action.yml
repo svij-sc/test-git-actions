@@ -26,26 +26,6 @@ jobs:
           pr_number: ${{ inputs.pr_number }}
           message: "🔄 [Workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) started."
 
-      # - name: Get PRs source branch name
-      #   id: pr_src_branch
-      #   uses: actions/github-script@v7
-      #   env:
-      #     PR_NUMBER: ${{ inputs.pr_number }}
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     # https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28#get-a-pull-request
-      #     script: |
-      #       const pr_number = process.env.PR_NUMBER;
-      #       const pr = await github.rest.pulls.get({
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         pull_number: pr_number
-      #       });
-      #       console.log("PR:", pr);
-      #       const branchName = pr.data.head.ref;
-      #       console.log("Branch name is:", branchName);
-      #       core.setOutput("branch", branchName);
-
       - name: Get PRs source branch name
         id: get_src_branch
         uses: ./.github/actions/get-pr-src-branch
@@ -53,13 +33,16 @@ jobs:
           pr_number: ${{ inputs.pr_number }}
 
       - name: Run some command
+        env:
+          BRANCH_NAME: ${{ steps.get_src_branch.outputs.branch_name }}
         run: |
-          echo "Running command on branch: ${{ steps.get_src_branch.outputs.pr_src_branch }}"
+          echo "Running command on branch: $BRANCH_NAME"
+          echo "Running command on branch: ${{ steps.get_src_branch.outputs.branch_name }}"
 
       - name: Checkout branch
         uses: actions/checkout@v4
         with:
-          ref: ${{ steps.get_src_branch.outputs.pr_src_branch }}
+          ref: ${{ steps.get_src_branch.outputs.branch_name }}
 
       
       - name: Commment workflow succeeeded
