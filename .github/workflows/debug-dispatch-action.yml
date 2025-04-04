@@ -25,7 +25,6 @@ jobs:
         with:
           pr_number: ${{ inputs.pr_number }}
           message: "🔄 [Workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) started."
-          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       # - name: Get PRs source branch name
       #   id: pr_src_branch
@@ -52,7 +51,6 @@ jobs:
         uses: ./.github/actions/get-pr-src-branch
         with:
           pr_number: ${{ inputs.pr_number }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run some command
         run: |
@@ -69,4 +67,3 @@ jobs:
         with:
           pr_number: ${{ inputs.pr_number }}
           message: "✅ [Workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) completed successfully!"
-          github-token: ${{ secrets.GITHUB_TOKEN }}

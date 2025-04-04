@@ -28,4 +28,6 @@ runs:
             pull_number: pr_number,
           });
           const branch_name = pr.data.head.ref;
+          console.log("Branch name is:", branch_name);
+          console.log("PR data:", pr.data);
           core.setOutput("branch_name", branch_name);  // matches the output ID above
