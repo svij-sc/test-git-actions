@@ -10,6 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+      # We need to checkout the code first so we can use actions defined on it
+      - uses: actions/checkout@v4 
+        with:
+          ref: main
+
       - name: Commment workflow started
         uses: ./.github/actions/comment-on-pr
         with:
