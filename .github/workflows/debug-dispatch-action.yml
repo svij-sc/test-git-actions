@@ -34,13 +34,15 @@ jobs:
           PR_NUMBER: ${{ inputs.pr_number }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          # https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28#get-a-pull-request
           script: |
             const pr_number = process.env.PR_NUMBER;
-            const pr = await github.pulls.get({
+            const pr = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: pr_number
             });
+            console.log("PR:", pr);
             const branchName = pr.data.head.ref;
             console.log("Branch name is:", branchName);
             return branchName;
