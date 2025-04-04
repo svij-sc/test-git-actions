@@ -9,6 +9,10 @@ on:
 
 jobs:
   run-command-and-comment:
+    permissions: # https://docs.github.com/en/rest/issues/comments?apiVersion=2022-11-28#create-an-issue-comment
+      contents: 'read'
+      issues: 'write'
+      pull-requests: 'write'
     runs-on: ubuntu-latest
     steps:
 

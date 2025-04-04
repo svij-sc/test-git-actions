@@ -26,8 +26,8 @@ runs:
           const pr_number = process.env.PR_NUMBER;
           const message = process.env.MESSAGE;
           await github.rest.issues.createComment({
+            issue_number: pr_number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            issue_number: pr_number,
             body: message
           });
