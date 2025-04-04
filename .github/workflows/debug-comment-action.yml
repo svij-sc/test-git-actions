@@ -21,14 +21,16 @@ jobs:
           ref: main
           fetch-depth: 1
       - uses: ./.github/actions/assert-is-collaborator
+        id: assert-is-collaborator
         with:
           username: ${{ github.event.comment.user.login }}
+          initiating-pr-number: ${{ github.event.issue.number }}
 
       - name: Commment workflow started
         uses: ./.github/actions/comment-on-pr
         with:
           pr_number: ${{ github.event.issue.number }}
-          message: "🔄 [Workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) started."
+          message: "🔄 [Workflow](${{ env.WORKFLOW_URL }}) started."
 
       - name: Debug
         env:
@@ -42,8 +44,8 @@ jobs:
         uses: ./.github/actions/comment-on-pr
         with:
           pr_number: ${{ github.event.issue.number }}
-          message: "✅ [Workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) completed successfully!"
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          message: "✅ [Workflow](${{ env.WORKFLOW_URL }}) completed successfully!"
+      
 
       # - name: Checkout branch
       #   uses: actions/checkout@v4

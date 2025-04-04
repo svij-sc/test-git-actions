@@ -47,14 +47,16 @@ jobs:
             console.log("Branch name is:", branchName);
             return branchName;
 
+      
+      - name: Run some command
+        run: |
+          echo "Running command on branch: ${{ steps.pr_src_branch.outputs.result }}"
+
       - name: Checkout branch
         uses: actions/checkout@v4
         with:
           ref: ${{ steps.pr_src_branch.outputs.result }}
 
-      - name: Run some command
-        run: |
-          echo "Running command on branch: ${{ steps.pr_src_branch.outputs.result }}"
       
       - name: Commment workflow succeeeded
         uses: ./.github/actions/comment-on-pr
