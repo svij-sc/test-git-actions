@@ -15,7 +15,6 @@ jobs:
       pull-requests: 'write'
     runs-on: ubuntu-latest
     steps:
-
       # We need to checkout the code first so we can use actions defined on it
       - uses: actions/checkout@v4 
         with:
