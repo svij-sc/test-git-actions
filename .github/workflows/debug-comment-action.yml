@@ -12,6 +12,8 @@ jobs:
       issues: 'write'
       pull-requests: 'write'
     runs-on: ubuntu-latest
+    env:
+      WORKFLOW_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
     steps:
       # Ensure we are making checks using the context in main branch to be safe
       - uses: actions/checkout@v4
@@ -33,7 +35,15 @@ jobs:
       - name: Debug
         run: |
           echo "Debugging..."
-          echo "pull_request info: ${{ github.event.issue.pull_request }}"
+          echo "pull_request info: ${{ github.event.issue.pull_request.head.ref }}"
+          echo "workflow_url: ${{ env.WORKFLOW_URL }}"
+
+      - name: Comment workflow ended
+        uses: ./.github/actions/comment-on-pr
+        with:
+          pr_number: ${{ github.event.issue.number }}
+          message: "✅ [Workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) completed successfully!"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       # - name: Checkout branch
       #   uses: actions/checkout@v4
