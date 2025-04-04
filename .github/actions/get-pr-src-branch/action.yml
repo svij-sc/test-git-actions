@@ -20,7 +20,6 @@ runs:
       env:
         PR_NUMBER: ${{ inputs.pr_number }}
       with:
-        github-token: ${{ env.GITHUB_TOKEN }}
         script: |
           const pr_number = process.env.PR_NUMBER;
           const pr = await github.rest.pulls.get({
