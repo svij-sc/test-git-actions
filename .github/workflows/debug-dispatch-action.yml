@@ -1,3 +1,5 @@
+name: debug-dispatch-action
+
 on:
   workflow_dispatch:
     inputs:
