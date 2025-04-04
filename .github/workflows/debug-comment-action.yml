@@ -5,8 +5,12 @@ on:
         types: [created]
 
 jobs:
-  run-command-and-comment:
+  run-command-from-comment:
     if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '/debug-action') }}
+    permissions: # https://docs.github.com/en/rest/issues/comments?apiVersion=2022-11-28#create-an-issue-comment
+      contents: 'read'
+      issues: 'write'
+      pull-requests: 'write'
     runs-on: ubuntu-latest
     steps:
       # Ensure we are making checks using the context in main branch to be safe
