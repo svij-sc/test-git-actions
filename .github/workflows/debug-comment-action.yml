@@ -14,37 +14,37 @@ jobs:
     runs-on: ubuntu-latest
     env:
       WORKFLOW_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+    
     steps:
-      # Ensure we are making checks using the context in main branch to be safe
-      - uses: actions/checkout@v4
-        with:
-          ref: main
-          fetch-depth: 1
-      - uses: ./.github/actions/assert-is-collaborator
-        id: assert-is-collaborator
+      - uses: svij-sc/test-git-actions/.github/actions/assert-is-collaborator@main
         with:
           username: ${{ github.event.comment.user.login }}
           initiating-pr-number: ${{ github.event.issue.number }}
 
-      - name: Commment workflow started
-        uses: ./.github/actions/comment-on-pr
+      - uses: svij-sc/test-git-actions/.github/workflows/debug-dispatch-action.yml@main
         with:
           pr_number: ${{ github.event.issue.number }}
-          message: "🔄 [Workflow](${{ env.WORKFLOW_URL }}) started."
 
-      - name: Debug
-        env:
-          PR_DEBUG_INFO: ${{ toJson(github.event.issue.pull_request)}}
-        run: |
-          echo "Debugging..."
-          echo "pull_request info: $PR_DEBUG_INFO"
-          echo "workflow_url: ${{ env.WORKFLOW_URL }}"
 
-      - name: Comment workflow ended
-        uses: ./.github/actions/comment-on-pr
-        with:
-          pr_number: ${{ github.event.issue.number }}
-          message: "✅ [Workflow](${{ env.WORKFLOW_URL }}) completed successfully!"
+      # - name: Commment workflow started
+      #   uses: ./.github/actions/comment-on-pr
+      #   with:
+      #     pr_number: ${{ github.event.issue.number }}
+      #     message: "🔄 [Workflow](${{ env.WORKFLOW_URL }}) started."
+
+      # - name: Debug
+      #   env:
+      #     PR_DEBUG_INFO: ${{ toJson(github.event.issue.pull_request)}}
+      #   run: |
+      #     echo "Debugging..."
+      #     echo "pull_request info: $PR_DEBUG_INFO"
+      #     echo "workflow_url: ${{ env.WORKFLOW_URL }}"
+
+      # - name: Comment workflow ended
+      #   uses: ./.github/actions/comment-on-pr
+      #   with:
+      #     pr_number: ${{ github.event.issue.number }}
+      #     message: "✅ [Workflow](${{ env.WORKFLOW_URL }}) completed successfully!"
       
 
       # - name: Checkout branch

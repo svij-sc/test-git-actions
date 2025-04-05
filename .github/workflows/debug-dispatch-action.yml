@@ -6,6 +6,15 @@ on:
       pr_number:
         description: 'PR to run the workflow on'
         required: true
+  workflow_call:
+    inputs:
+      pr_number:
+        description: 'PR to run the workflow on'
+        required: true
+        type: string
+    secrets:
+      token:
+        required: true
 
 jobs:
   run-command-and-comment:
