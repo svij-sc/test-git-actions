@@ -12,18 +12,22 @@ jobs:
       issues: 'write'
       pull-requests: 'write'
     runs-on: ubuntu-latest
-    env:
-      WORKFLOW_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-    
     steps:
-      - uses: svij-sc/test-git-actions/.github/actions/assert-is-collaborator@main
-        with:
-          username: ${{ github.event.comment.user.login }}
-          initiating-pr-number: ${{ github.event.issue.number }}
-
-      - uses: svij-sc/test-git-actions/.github/workflows/debug-dispatch-action.yml@main
+      - uses: svij-sc/test-git-actions/.github/actions/run-command-on-pr@main
         with:
           pr_number: ${{ github.event.issue.number }}
+          command: |
+            echo "Running command on branch..."
+            cat README.md
+            
+    #   WORKFLOW_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+    
+    # steps:
+    #   - uses: svij-sc/test-git-actions/.github/actions/assert-is-collaborator@main
+    #     with:
+    #       username: ${{ github.triggering_actor }}
+    #       initiating-pr-number: ${{ github.event.issue.number }}
+
 
 
       # - name: Commment workflow started
