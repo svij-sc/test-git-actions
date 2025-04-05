@@ -14,21 +14,18 @@ jobs:
       issues: 'write'
       pull-requests: 'write'
     runs-on: ubuntu-latest
+    env:
+      WORKFLOW_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
     steps:
-      # We need to checkout the code first so we can use actions defined on it
-      - uses: actions/checkout@v4 
-        with:
-          ref: main
-
       - name: Commment workflow started
-        uses: ./.github/actions/comment-on-pr
+        uses: svij-sc/test-git-actions/.github/actions/comment-on-pr@main
         with:
           pr_number: ${{ inputs.pr_number }}
-          message: "🔄 [Workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) started."
+          message: "🔄 [Workflow](${{ env.WORKFLOW_URL }}) started."
 
       - name: Get PRs source branch name
         id: get_src_branch
-        uses: ./.github/actions/get-pr-src-branch
+        uses: svij-sc/test-git-actions/.github/actions/get-pr-src-branch@main
         with:
           pr_number: ${{ inputs.pr_number }}
 
@@ -44,9 +41,8 @@ jobs:
         with:
           ref: ${{ steps.get_src_branch.outputs.branch_name }}
 
-      
       - name: Commment workflow succeeeded
-        uses: ./.github/actions/comment-on-pr@main
+        uses: svij-sc/test-git-actions/.github/actions/comment-on-pr@main
         with:
           pr_number: ${{ inputs.pr_number }}
-          message: "✅ [Workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) completed successfully!"
+          message: "✅ [Workflow](${{ env.WORKFLOW_URL }}) completed successfully!"
