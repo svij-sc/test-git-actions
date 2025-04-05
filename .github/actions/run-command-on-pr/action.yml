@@ -6,9 +6,7 @@ inputs:
     required: true
   command:
     description: 'The command to execute on the PR'
-    required: false
-    default: |
-      echo "Running command on branch: ${{ steps.get_src_branch.outputs.branch_name }}"
+    required: true
 runs:
   using: "composite"
   steps:
@@ -40,11 +38,9 @@ runs:
         ref: ${{ steps.get_src_branch.outputs.branch_name }}
 
     - name: Run specified command on the PR branch
-      env:
-        BRANCH_NAME: ${{ steps.get_src_branch.outputs.branch_name }}
       shell: bash
       run: |
-        echo "Running command on branch: ${{ steps.get_src_branch.outputs.branch_name }}"
+        echo "Running command on branch: ${{ inputs.command }}"
 
     - name: Commment workflow succeeded
       uses: 'svij-sc/test-git-actions/.github/actions/comment-on-pr@main'
