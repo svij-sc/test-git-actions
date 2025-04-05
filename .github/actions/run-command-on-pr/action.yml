@@ -39,8 +39,7 @@ runs:
 
     - name: Run specified command on the PR branch
       shell: bash
-      run: |
-        echo "Running command on branch: ${{ inputs.command }}"
+      run: ${{ inputs.command }}
 
     - name: Commment workflow succeeded
       uses: 'svij-sc/test-git-actions/.github/actions/comment-on-pr@main'
