@@ -1,0 +1,14 @@
+name: On Push to active PR
+run-name: ${{ github.actor }} pushed to ${{ github.ref }}
+on:
+  pull_request:
+    types: [synchronize, opened, reopened]
+    branches:
+      - main
+      - release/**
+jobs:   
+  call-unit-test:
+    # Ensure we are on a PR
+    uses: ./.github/workflows/unit-test.yaml
+    with:
+      ref: ${{ github.ref }}

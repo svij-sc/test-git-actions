@@ -1,0 +1,25 @@
+name: Unit Test
+
+run-name: Unit Tests on ${{ inputs.ref }}
+on:
+  workflow_call:
+    inputs:
+      ref:
+        required: true
+        type: string
+        description: The git reference to check out. This can be a branch name, tag name, or commit SHA.
+        
+jobs:
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+        ref: ${{ inputs.ref }}
+    - name: Test
+      run: |
+        echo "Running unit tests on branch: ${{ inputs.ref }}"
+
+
